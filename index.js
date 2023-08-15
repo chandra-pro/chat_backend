@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const connectDB = require("./config/db");
 const dotenv = require("dotenv");
 const userRoutes = require("./routes/userRoutes");
@@ -8,7 +9,18 @@ const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const path = require("path");
 
 dotenv.config();
-connectDB();
+// connectDB();
+mongoose
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("DB Connetion Successfull");
+  })
+  .catch(err => {
+    console.log(err.message, "hello");
+  });
 const app = express();
 
 app.use(express.json()); // to accept json data
